@@ -22,20 +22,20 @@ export const routes = [
       {
         icon: <HomeIcon {...icon} />,
         name: "Página Inicial",
-        path: "/home",
+        path: "/inicio",
         element: <Home />,
       },
       {
         icon: <UsersIcon {...icon} />,
         name: "Pacientes",
-        path: "/patients",
-        element: <Profile />,
+        path: "/pacientes",
+        element: <Tables />,
       },
       {
         icon: <BoltIcon {...icon} />,
         name: "Exame Rápido",
-        path: "/quickexam",
-        element: <Tables />,
+        path: "/examerapido",
+        element: <Profile />,
       },
       {
         icon: <BellIcon {...icon} />,
