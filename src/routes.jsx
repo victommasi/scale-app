@@ -15,6 +15,20 @@ const icon = {
   className: "w-5 h-5 text-inherit",
 };
 
+const testUser = {
+  "id": 1,
+  "name": "Nilson Ierland",
+  "email": "nierland0@indiegogo.com",
+  "gender": "F",
+  "dob": "01/05/1981",
+  "phone": "(743) 1107769",
+  "height": 1.63,
+  "weight": 84.7,
+  "bf": 40.0,
+  "muscle": 70.3,
+  "bmi": 90.7
+}
+
 export const routes = [
   {
     layout: "dashboard",
@@ -35,7 +49,7 @@ export const routes = [
         icon: <BoltIcon {...icon} />,
         name: "Exame Rápido",
         path: "/examerapido",
-        element: <Profile />,
+        element: <Profile user={testUser}/>,
       },
       {
         icon: <BellIcon {...icon} />,
