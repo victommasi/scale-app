@@ -23,7 +23,7 @@ import {
   Option
 } from "@material-tailwind/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
-import { authorsTableData, projectsTableData } from "@/data";
+import { patientsTableData } from "@/data";
 import { Link } from "react-router-dom";
 import { PlusCircleIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
@@ -32,15 +32,14 @@ import PatientDialog from "@/widgets/patient-dialog";
 import Avaname from "@/widgets/avaname";
 import { getAgeFromBirth } from "@/utils/dateUtils";
 
-
-export const Tables = () => {
-  const [filteredPatients, setFilteredPatients] = useState(authorsTableData);
+export const Patients = () => {
+  const [filteredPatients, setFilteredPatients] = useState(patientsTableData);
   const [open, setIsOpen] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
 
   const filterPatient = (e) => {
     const { value } = e.target;
-    setFilteredPatients(authorsTableData.filter((patient) => {
+    setFilteredPatients(patientsTableData.filter((patient) => {
       return patient.name.toLowerCase().includes(value.toLowerCase());
     }))
   }
@@ -90,7 +89,7 @@ export const Tables = () => {
                   }`;
 
                   return (
-                    <Link key={patient.id} className="table-row" to={patient.id}>
+                    <Link to="/paciente" role="button" key={patient.id} className="table-row hover:bg-blue-gray-50 transition-colors">
                         <td className={className}>
                           <div className="flex items-center gap-4">
                             <Avaname name={patient.name} size="md" />
@@ -168,4 +167,4 @@ export const Tables = () => {
   );
 }
 
-export default Tables;
+export default Patients;

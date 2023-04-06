@@ -20,16 +20,18 @@ import {
 } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
 import { ProfileInfoCard } from "@/widgets/cards";
-import { authorsTableData, projectsData } from "@/data";
+import { patientsTableData, projectsData } from "@/data";
 import Avaname from "@/widgets/avaname";
 import { getAgeFromBirth } from "@/utils/dateUtils";
 import { evaluationTableData } from "@/data/evaluation-table-data";
 import { useState } from "react";
-import ExamDialog from "@/widgets/evaluation-dialog";
+import ExamDialog from "@/widgets/exam-dialog";
+import PatientDialog from "@/widgets/patient-dialog";
 
 export function Profile({user}) {
   const { name, phone, email, height, gender, dob} = user;
-  const [open, setIsOpen] = useState(false);
+  const [isOpenExam, setIsExamOpen] = useState(false);
+  const [isOpenPatient, setIsPatientOpen] = useState(false);
 
   return (
     <>
@@ -46,7 +48,7 @@ export function Profile({user}) {
               </Typography>
             </div>
             <div className="flex">
-              <Button color="blue-gray" className="flex items-center gap-2" onClick={() => setIsOpen(true)}>
+              <Button color="blue-gray" className="flex items-center gap-2" onClick={() => setIsExamOpen(true)}>
                 <PlusCircleIcon className="h-5 w-5" />
                 Nova Avaliação
               </Button>
@@ -63,8 +65,10 @@ export function Profile({user}) {
                 Telefone: phone,
               }}
               action={
-                <Tooltip content="Editar">
-                  <PencilIcon className="h-4 w-4 cursor-pointer text-blue-gray-500" />
+                <Tooltip content="Editar" color="blue-gray">
+                  <IconButton variant="text" size="lg" onClick={() => setIsPatientOpen(true)}>
+                    <i className="fas fa-pencil" />
+                  </IconButton>
                 </Tooltip>
               }
             />
@@ -98,9 +102,8 @@ export function Profile({user}) {
                         ? ""
                         : "border-b border-blue-gray-50"
                     }`;
-
                     return (
-                      <Link key={patient.id} className="table-row" to={patient.id}>
+                      <Link to="/paciente" role="button" key={patient.id} className="table-row hover:bg-blue-gray-50 transition-colors">
                           <td className={className}>
                             <div className="flex items-center gap-4">
                               <div>
@@ -181,7 +184,8 @@ export function Profile({user}) {
           </div>
         </CardBody>
       </Card>
-      <ExamDialog patient={user} open={open} onClose={() => setIsOpen(false)} quickexam />
+      {isOpenExam && <ExamDialog patient={user} open={isOpenExam} onClose={() => setIsExamOpen(false)} />}
+      {isOpenPatient && <PatientDialog patient={user} open={isOpenPatient} onClose={() => setIsPatientOpen(false)} />}
     </>
   );
 }

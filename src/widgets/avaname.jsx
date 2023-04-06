@@ -1,7 +1,6 @@
 import classNames from "classnames";
 
 const Avaname = ({ name, size }) => {
-
   return (
     <div className={classNames("flex items-center justify-center rounded-full bg-blue-gray-500 text-white", {
       "h-8 w-8 text-sm": size === "sm",

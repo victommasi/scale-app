@@ -45,12 +45,10 @@ export function DashboardNavbar() {
           </Typography>
         </div>
         <div className="flex items-center">
-          <Link to="/auth/sign-in">
-            <div className="hidden items-center gap-1 px-4 xl:flex text-blue-gray-500">
-              <UserCircleIcon className="h-10 w-10 text-blue-gray-500" />
-              <p className="text-sm font-bold">John Doe</p>
-            </div>
-          </Link>
+          <div className="hidden items-center gap-1 px-4 xl:flex text-blue-gray-500">
+            <UserCircleIcon className="h-10 w-10 text-blue-gray-500" />
+            <p className="text-sm font-bold">John Doe</p>
+          </div>
           <Menu>
             <MenuHandler>
               <IconButton variant="text" color="blue-gray">
@@ -63,7 +61,7 @@ export function DashboardNavbar() {
                   <Typography
                     variant="small"
                     color="blue-gray"
-                    className="mb-1 font-normal"
+                    className="text-xs font-semibold text-blue-gray-600"
                   >
                     Editar Perfil
                   </Typography>
@@ -74,7 +72,7 @@ export function DashboardNavbar() {
                   <Typography
                     variant="small"
                     color="blue-gray"
-                    className="mb-1 font-normal"
+                    className="text-xs font-semibold text-blue-gray-600"
                   >
                     Sair
                   </Typography>

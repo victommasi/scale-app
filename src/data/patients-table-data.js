@@ -1,4 +1,4 @@
-export const authorsTableData = [{
+export const patientsTableData = [{
   "id": 1,
   "name": "Nilson Ierland",
   "email": "nierland0@indiegogo.com",
@@ -192,4 +192,4 @@ export const authorsTableData = [{
   "bmi": 23.8
 }]
 
-export default authorsTableData;
+export default patientsTableData;

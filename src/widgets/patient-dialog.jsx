@@ -10,7 +10,7 @@ import {
 } from "@material-tailwind/react";
 import { Controller, useForm } from "react-hook-form";
 
-const PatientDialog = ({ patient, open, onClose }) => {
+const PatientDialog = ({ patient = null, open, onClose }) => {
   const { register, handleSubmit, control } = useForm({ defaultValues: { ...patient }});
   
   const onSubmit = data => {

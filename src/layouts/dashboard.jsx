@@ -14,11 +14,7 @@ export function Dashboard() {
         <DashboardNavbar />
         <Routes>
           {routes.map(
-            ({ layout, pages }) =>
-              layout === "dashboard" &&
-              pages.map(({ path, element }) => (
-                <Route exact path={path} element={element} />
-              ))
+            ({ path, element }) => <Route exact path={path} element={element} />
           )}
         </Routes>
         <div className="text-blue-gray-600">
