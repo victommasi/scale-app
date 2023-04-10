@@ -1,9 +1,11 @@
 import {
   HomeIcon,
   UsersIcon,
-  BoltIcon
+  BoltIcon,
+  BellIcon
 } from "@heroicons/react/24/solid";
 import { Home, Profile, Patients, Notifications } from "@/pages/dashboard";
+import Result from "./pages/dashboard/result";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -42,12 +44,12 @@ export const routes = [
     path: "/paciente",
     element: <Profile user={testUser}/>,
   },
-  // {
-  //   icon: <BellIcon {...icon} />,
-  //   name: "notifactions",
-  //   path: "/notifactions",
-  //   element: <Notifications />,
-  // },
+  {
+    icon: <BellIcon {...icon} />,
+    name: "Resultado (temp)",
+    path: "/resultado",
+    element: <Result />,
+  },
 ];
 
 export default routes;

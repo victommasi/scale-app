@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .line:after {
+    content:'';
+    width: 100%;
+    @apply text-gray-800 absolute ml-[5px] mt-[13px] border-b-2 border-b-gray-400;
+  }
+}

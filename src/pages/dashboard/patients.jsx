@@ -87,9 +87,8 @@ export const Patients = () => {
                       ? ""
                       : "border-b border-blue-gray-50"
                   }`;
-
                   return (
-                    <Link to="/paciente" role="button" key={patient.id} className="table-row hover:bg-blue-gray-50 transition-colors">
+                    <div to="/paciente" role="button" key={patient.id} className="table-row hover:bg-blue-gray-50 transition-colors">
                         <td className={className}>
                           <div className="flex items-center gap-4">
                             <Avaname name={patient.name} size="md" />
@@ -154,7 +153,7 @@ export const Patients = () => {
                             </MenuList>
                           </Menu>
                         </td>
-                    </Link>
+                    </div>
                   );
                 }
               )}
