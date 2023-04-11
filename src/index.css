@@ -8,4 +8,14 @@
     width: 100%;
     @apply text-gray-800 absolute ml-[5px] mt-[13px] border-b-2 border-b-gray-400;
   }
+
+  .table-grid {
+    @apply grid;
+    grid-template-columns: repeat(12, 38px);
+  }
+  .upperline:before {
+    content:'';
+    height: 5px;
+    @apply text-gray-800 absolute ml-[6px] border-l-2 border-l-gray-400;
+  }
 }
