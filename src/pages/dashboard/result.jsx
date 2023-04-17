@@ -89,6 +89,14 @@ const MuscleFatAnalyzis = ({exam}) => {
   const { weight, muscle, bf} = exampleFull.results[exampleFull.results.length-1];
   const bgKG = ((bf * weight) / 100) * 10;
 
+  const deltaWeight = () => {
+    if (bf <= 15) return 3
+    if (bf > 15 && bf <= 18.5) return 4 
+    if (bf > 18.5 && bf <= 24.0) return 5
+    if (bf > 24 && bf <= 28) return 5.5
+    return 6;
+  }
+
   return (
     <div className="w-full max-w-[640px]">
       <h2 className='text-lg font-semibold text-gray-800 border-b-4 border-b-gray-400'>Análise Músculo-Gordura</h2>
@@ -104,7 +112,7 @@ const MuscleFatAnalyzis = ({exam}) => {
         <tbody>
           <tr className='h-11'>
             <td className='bg-blue-gray-100 border-b border-b-white h-8 p-2'>Peso (kg)</td>
-            <BarCell range={weightGridNumbers} value={weight.toFixed(1)} />
+            <BarCell range={weightGridNumbers} value={weight.toFixed(1)} delta={deltaWeight()} />
           </tr>
           <tr className='h-11'>
             <td className='bg-blue-gray-100 border-b border-b-white p-2 leading-none'>Massa Muscular Esquelética (kg)</td>
@@ -139,41 +147,6 @@ const FatAnalyzis = ({exam}) => {
     if (bf > 24 && bf <= 28) return 5.5
     return 6;
   }
-
-  const chart = {
-    type: "bar",
-    height: 100,
-    width: 430,
-    series: [{
-      data: [24]
-    }],
-    options: {
-      chart: {
-        type: 'bar',
-        toolbar: {
-          show: false,
-        },
-      },
-      plotOptions: {
-        bar: {
-          borderRadius: 8,
-          horizontal: true,
-        }
-      },
-      dataLabels: {
-        enabled: false
-      },
-      xaxis: {
-        categories: [''],
-      },
-      yaxis: {
-        // categories: imcGridNumbers,
-        // tickAmount: 6,
-        min: 10,
-        max: 55,
-      },
-    },
-  };
 
   return (
     <div className="w-full max-w-[640px]">
