@@ -2,7 +2,7 @@ export const evaluationTableData = [
   {
   "id": 1,
   "patient": 1,
-  "date": "01/05/1981",
+  "date": "01/05/2023T00:00:00",
   "height": 183,
   "weight": 84.7,
   "bf": 40.0,
@@ -11,8 +11,8 @@ export const evaluationTableData = [
 },
 {
   "id": 2,
-  "patient": 2,
-  "date": "11/05/1991",
+  "patient": 1,
+  "date": "01/06/2023T00:00:00",
   "height": 173,
   "weight": 81.7,
   "bf": 40.0,
@@ -21,8 +21,8 @@ export const evaluationTableData = [
 },
 {
   "id": 3,
-  "patient": 3,
-  "date": "15/02/2001",
+  "patient": 1,
+  "date": "01/07/2023T00:00:00",
   "height": 173,
   "weight": 81.7,
   "bf": 40.0,

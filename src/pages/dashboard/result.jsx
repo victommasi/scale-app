@@ -1,6 +1,9 @@
 import React from 'react';
 import inbodylogo from '../../assets/images/inbody-logo.png'
-import { Progress } from '@material-tailwind/react';
+import exampleFull from '../../data/example-full'
+import Chart from "react-apexcharts";
+import { format } from 'date-fns';
+import { pt } from 'date-fns/locale';
 
 const weightGridNumbers = [55, 70, 85, 100, 115, 130, 145, 160, 175, 190, 205]
 const muscleGridNumbers = [70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170]
@@ -8,9 +11,9 @@ const fatGridNumbers = [40, 60, 80, 100, 160, 220, 280, 340, 400, 460, 520]
 const imcGridNumbers = [10.0, 15.0, 18.5, 21.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0]
 const pgcGridNumbers = ['08', 13.0, 18.0, 23.0, 28.0, 33.0, 38.0, 43.0, 48.0, 53.0, 58.0]
 
-const Result = (patient, exam) => {
+export const Result = ({patient, exam}) => {
   return (
-    <article className='flex gap-10 '>
+    <article className='flex gap-10 container'>
       <div className='flex flex-col w-2/3 gap-10'>
         <div className='border-b-4 border-b-red-900 h-12'>
           <img src={inbodylogo} className="w-[150px] h-auto" /> 
@@ -19,6 +22,7 @@ const Result = (patient, exam) => {
         <BodyCompositionAnalyzis />
         <MuscleFatAnalyzis />
         <FatAnalyzis />
+        <BodyCompositionHistoric />
       </div>
       <div className='flex flex-col w-1/3 gap-4'>
         <section className='w-full h-36'></section>
@@ -30,7 +34,7 @@ const Result = (patient, exam) => {
   )
 }
 
-const PatientInfoTable = (patient, exam) => {
+const PatientInfoTable = ({patient, exam}) => {
   return (
     <table className='w-full -mt-8 max-w-[640px]'>
       <thead>
@@ -55,14 +59,14 @@ const PatientInfoTable = (patient, exam) => {
   )
 }
 
-const BodyCompositionAnalyzis = (exam) => {
+const BodyCompositionAnalyzis = ({exam}) => {
   return (
     <div className="w-full max-w-[640px]">
       <h2 className='text-lg font-semibold text-gray-800 border-b-4 border-b-gray-400'>Análise da Composição Corporal</h2>
       <table className='w-full text-sm'>
         <tbody>
           <tr>
-            <td colspan="2" className='bg-blue-gray-100 border-b border-b-white h-8 p-2'>Quantidade de água corporal, proteínas e minerais.</td>
+            <td colSpan="2" className='bg-blue-gray-100 border-b border-b-white h-8 p-2'>Quantidade de água corporal, proteínas e minerais.</td>
             <td className='border-b border-b-blue-gray-200 p-2 font-bold text-base'>27.8 (26.3 ~ 31.4)</td>
           </tr>
           <tr>
@@ -81,7 +85,10 @@ const BodyCompositionAnalyzis = (exam) => {
   )
 }
 
-const MuscleFatAnalyzis = (exam) => {
+const MuscleFatAnalyzis = ({exam}) => {
+  const { weight, muscle, bf} = exampleFull.results[exampleFull.results.length-1];
+  const bgKG = ((bf * weight) / 100) * 10;
+
   return (
     <div className="w-full max-w-[640px]">
       <h2 className='text-lg font-semibold text-gray-800 border-b-4 border-b-gray-400'>Análise Músculo-Gordura</h2>
@@ -91,54 +98,21 @@ const MuscleFatAnalyzis = (exam) => {
             <th className='w-[120px] bg-blue-gray-100'></th>
             <th className='w-[90px] bg-blue-gray-100 border-l border-l-white'>Abaixo</th>
             <th className='w-[80px] bg-blue-gray-200 border-l border-l-white'>Normal</th>
-            <th colspan="3" className='w-[240px] bg-blue-gray-100 border-l border-l-white'>Acima</th>
+            <th colSpan="3" className='w-[240px] bg-blue-gray-100 border-l border-l-white'>Acima</th>
           </tr>
         </thead>
         <tbody>
           <tr className='h-11'>
             <td className='bg-blue-gray-100 border-b border-b-white h-8 p-2'>Peso (kg)</td>
-            <td colspan="5" className='border-b border-b-blue-gray-200 px-2 font-bold text-base relative'>
-              <ul className='table-grid text-[11px] w-full text-gray-700 absolute -top-[1px]'>
-                {weightGridNumbers.map(number => {
-                  return <li key={number} className='upperline'>{number}</li>
-                })}
-                <li className='-ml-[15px]'>%</li>
-              </ul>
-              <div className='flex justify-start items-center pt-[13px]'>
-                <div className='flex rounded w-[140px] h-3 bg-gray-900' />
-                <span className='ml-2 text-gray-900'>59.1</span>
-              </div>
-            </td>
+            <BarCell range={weightGridNumbers} value={weight.toFixed(1)} />
           </tr>
           <tr className='h-11'>
             <td className='bg-blue-gray-100 border-b border-b-white p-2 leading-none'>Massa Muscular Esquelética (kg)</td>
-            <td colspan="5" className='border-b border-b-blue-gray-200 px-2 font-bold text-base relative'>
-              <ul className='table-grid text-[11px] w-full text-gray-700 absolute -top-[1px]'>
-                {muscleGridNumbers.map(number => {
-                  return <li key={number} className='upperline'>{number}</li>
-                })}
-                <li className='-ml-[15px]'>%</li>
-              </ul>
-              <div className='flex justify-start items-center pt-[13px]'>
-                <div className='flex rounded w-[110px] h-3 bg-gray-900' />
-                <span className='ml-2 text-gray-900'>19.1</span>
-              </div>
-            </td>
+            <BarCell range={muscleGridNumbers} value={muscle.toFixed(1)} />
           </tr>
           <tr className='h-11'>
             <td className=' bg-blue-gray-100 border-b border-b-gray p-2 leading-none'>Massa de Gordura (kg)</td>
-            <td colspan="5" className='border-b border-b-blue-gray-200 px-2 font-bold text-base relative'>
-              <ul className='table-grid text-[11px] w-full text-gray-700 absolute -top-[1px]'>
-                {fatGridNumbers.map(number => {
-                  return <li key={number} className='upperline'>{number}</li>
-                })}
-                <li className='-ml-[15px]'>%</li>
-              </ul>
-              <div className='flex justify-start items-center pt-[13px]'>
-                <div className='flex rounded w-[180px] h-3 bg-gray-900' />
-                <span className='ml-2 text-gray-900'>21.1</span>
-              </div>
-            </td>
+            <BarCell range={fatGridNumbers} value={bgKG.toFixed(1)} delta={.9} /> 
           </tr>
         </tbody>
       </table> 
@@ -146,7 +120,61 @@ const MuscleFatAnalyzis = (exam) => {
   )
 }
 
-const FatAnalyzis = (exam) => {
+const FatAnalyzis = ({exam}) => {
+  const { weight, height, bf} = exampleFull.results[exampleFull.results.length-1];
+  const imc = weight / ((height / 100) ** 2);
+  
+  const deltaImc = () => {
+    if (imc <= 15) return 3
+    if (imc > 15 && imc <= 18.5) return 4.5
+    if (imc > 18.5 && imc <= 21.5) return 5.2
+    if (imc > 21.5 && imc <= 25.0) return 6.2
+    return 6.5;
+  }
+
+  const deltaBf = () => {
+    if (bf <= 15) return 3
+    if (bf > 15 && bf <= 18.5) return 4 
+    if (bf > 18.5 && bf <= 24.0) return 5
+    if (bf > 24 && bf <= 28) return 5.5
+    return 6;
+  }
+
+  const chart = {
+    type: "bar",
+    height: 100,
+    width: 430,
+    series: [{
+      data: [24]
+    }],
+    options: {
+      chart: {
+        type: 'bar',
+        toolbar: {
+          show: false,
+        },
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 8,
+          horizontal: true,
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      xaxis: {
+        categories: [''],
+      },
+      yaxis: {
+        // categories: imcGridNumbers,
+        // tickAmount: 6,
+        min: 10,
+        max: 55,
+      },
+    },
+  };
+
   return (
     <div className="w-full max-w-[640px]">
       <h2 className='text-lg font-semibold text-gray-800 border-b-4 border-b-gray-400'>Análise de Obesidade</h2>
@@ -156,39 +184,17 @@ const FatAnalyzis = (exam) => {
             <th className='w-[120px] bg-blue-gray-100'></th>
             <th className='w-[90px] bg-blue-gray-100 border-l border-l-white'>Abaixo</th>
             <th className='w-[80px] bg-blue-gray-200 border-l border-l-white'>Normal</th>
-            <th colspan="3" className='w-[240px] bg-blue-gray-100 border-l border-l-white'>Acima</th>
+            <th colSpan="3" className='w-[240px] bg-blue-gray-100 border-l border-l-white'>Acima</th>
           </tr>
         </thead>
         <tbody>
           <tr className='h-11'>
             <td className='bg-blue-gray-100 border-b border-b-white h-8 p-2'>IMC (kg/m²)</td>
-            <td colspan="5" className='border-b border-b-blue-gray-200 px-2 font-bold text-base relative'>
-              <ul className='table-grid text-[11px] w-full text-gray-700 absolute -top-[1px]'>
-                {imcGridNumbers.map(number => {
-                  return <li key={number} className='upperline'>{number}</li>
-                })}
-                <li className='-ml-[15px]'>%</li>
-              </ul>
-              <div className='flex justify-start items-center pt-[13px]'>
-                <div className='flex rounded w-[150px] h-3 bg-gray-900' />
-                <span className='ml-2 text-gray-900'>29.1</span>
-              </div>
-            </td>
+            <BarCell range={imcGridNumbers} value={imc.toFixed(1)} delta={deltaImc()} />
           </tr>
           <tr className='h-11'>
             <td className='bg-blue-gray-100 border-b border-b-white p-2 leading-none'>PGC (%)</td>
-            <td colspan="5" className='border-b border-b-blue-gray-200 px-2 font-bold text-base relative'>
-              <ul className='table-grid text-[11px] w-full text-gray-700 absolute -top-[1px]'>
-                {pgcGridNumbers.map(number => {
-                  return <li key={number} className='upperline'>{number}</li>
-                })}
-                <li className='-ml-[15px]'>%</li>
-              </ul>
-              <div className='flex justify-start items-center pt-[13px]'>
-                <div className='flex rounded w-[210px] h-3 bg-gray-900' />
-                <span className='ml-2 text-gray-900'>36.1</span>
-              </div>
-            </td>
+            <BarCell range={pgcGridNumbers} value={bf} delta={deltaBf()} />
           </tr>
         </tbody>
       </table> 
@@ -196,7 +202,131 @@ const FatAnalyzis = (exam) => {
   )
 }
 
-const InbodyPoints = (exam) => {
+const BodyCompositionHistoric = ({exam}) => {
+
+  const { weight, date, muscle, bf } = {
+    date: exampleFull.results.map(res => formatDate(res.date)),
+    weight: exampleFull.results.map(res => res.weight),
+    muscle: exampleFull.results.map(res => res.muscle),
+    bf: exampleFull.results.map(res => res.bf),
+  }
+
+  return (
+    <div className="w-full max-w-[640px]">
+      <h2 className='text-lg font-semibold text-gray-800 border-b-4 border-b-gray-400'>Histórico da Composição Corporal</h2>
+      <table className='w-full text-sm'>
+        <tbody>
+          <tr className='h-11'>
+            <td className='bg-blue-gray-100 border-b border-b-white h-8 p-2 w-[120px]'>Peso (kg)</td>
+            <LineCell data={weight} categories={date} />
+          </tr>
+          <tr className='h-11'>
+            <td className='bg-blue-gray-100 border-b border-b-white p-2 leading-none w-[120px]'>Massa Muscular Esquelética (kg)</td>
+            <LineCell data={muscle} categories={date}/>
+          </tr>
+          <tr className='h-11'>
+            <td className='bg-blue-gray-100 border-b border-b-white p-2 leading-none w-[120px]'>PGC (%)</td>
+            <LineCell data={bf} categories={date}/>
+          </tr>
+        </tbody>
+      </table> 
+    </div>
+  )
+}
+
+export const formatDateTime = (date) => {
+  return format(new Date(date), "dd/MM/yyyy hh:mm", {locale : pt})
+}
+
+export const formatDate = (date) => {
+  return format(new Date(date), "dd/MMM", {locale : pt})
+}
+
+const BarCell = ({range, value, delta}) => {
+  const calcWidthBasedOnValue = () => {
+    const width = value * delta;
+    return width + 'px';
+  }
+
+  return (
+    <td colSpan="3" className='border-b border-b-blue-gray-200 px-2 font-bold text-base relative'>
+      <ul className='table-grid text-[11px] w-full text-gray-700 absolute -top-[1px]'>
+        {range.map(number => (<li key={number} className='upperline'>{number}</li>))}
+        <li className='-ml-[15px]'>%</li>
+      </ul>
+      <div className='flex justify-start items-center pt-[13px]'>
+        <div className={`flex rounded h-2 bg-gray-900`} style={{width: calcWidthBasedOnValue()}}/>
+        <span className='ml-2 text-gray-900'>{value}</span>
+      </div>
+    </td>
+  )
+}
+
+const LineCell = ({data, categories}) => {
+  const dailySalesChart = {
+    type: "line",
+    height: 100,
+    series: [
+      {
+        data,
+      },
+    ],
+    options: {
+      chart: {
+        toolbar: {
+          show: false,
+        },
+      },
+      dataLabels: {
+        enabled: true,
+      },
+      grid: {
+        show: false,
+        padding: {
+          top: 0,
+          right: 0,
+          left: 20,
+          bottom: -12,
+        },
+      },
+      colors: ['#0f172a'],
+      yaxis: {
+        show: false,
+      },
+      xaxis: {
+        show: false,
+        axisTicks: {
+          show: false,
+        },
+        axisBorder: {
+          show: false,
+        },
+        labels: {
+          style: {
+            colors: "#000",
+            fontSize: "12px",
+            fontFamily: "inherit",
+            fontWeight: 600,
+            padding: 10
+          },
+        }, 
+        categories,
+      },
+    }
+  }
+
+  return (
+    <td colSpan="3" className='border-b border-b-blue-gray-200 px-2 font-bold text-base relative'>
+      <Chart
+        className="max-h-20 min-w-0"
+        color="blue"
+        {...dailySalesChart}
+      />
+    </td>
+  )
+}
+
+const InbodyPoints = ({exam}) => {
   return (
     <section className='border-t-4 border-t-gray-400 py-4'>
       <h2 className='text-lg font-semibold text-gray-800 line'>Pontuação InBody</h2>
@@ -211,7 +341,7 @@ const InbodyPoints = (exam) => {
   )
 }
 
-const WeightControl = (exam) => {
+const WeightControl = ({exam}) => {
   return (
     <section>
       <h2 className='text-lg font-semibold text-gray-800 line'>Controle de Peso</h2>
@@ -247,28 +377,28 @@ const ResultInfo = () => {
         <div>
           <h3 className="font-bold text-sm">Análise da Composição Corporal</h3>
           <p className="text-sm">O peso do corpo é a soma da Água Corporal Total, proteínas, sais minerais e massa de gordura. 
-            Mantém uma composição balanceada do corpo para permanecer saudável</p>
+            Mantém uma composição balanceada do corpo para permanecer saudável.</p>
         </div>
         <div>
           <h3 className="font-bold text-sm">Análise Músculo-Gordura</h3>
           <p className="text-sm">Compara os comprimentos de barras de massa muscular esquelética e massa de gordura.
-            Quanto maior a barra da massa muscula esquelética é comparada com a barra de massa de gordura coportal, mais for o corpo é.</p>
+            Quanto maior a barra da massa muscula esquelética é comparada com a barra de massa de gordura coportal, mais forte o corpo é.</p>
         </div>
         <div>
           <h3 className="font-bold text-sm">Análise de Obesidade</h3>
           <p className="text-sm">O IMC é um índice utilizado para determinar a obesidade, através da altura e peso.
-            PGC é o percentual de gordura corporal em relação ao peso corporal</p>
+            PGC é o percentual de gordura corporal em relação ao peso corporal.</p>
         </div>
-        <div>
+        {/* <div>
           <h3 className="font-bold text-sm">Análise da Massa Magra Segmentar</h3>
           <p className="text-sm">Avaliar se a quantidade de músculo é distribuído de forma adequada em todas as partes do corpo.
             Compara a massa muscular com o peso ideal.</p>
-        </div>
-        <div>
+        </div> */}
+        {/* <div>
           <h3 className="font-bold text-sm">Análise da Gordura Segmentar</h3>
           <p className="text-sm">Avalia se a quantidade de gordura é distribuida de maneira adequada em todas as partes do corpo.
             Compara a massa gorda ao peso ideal. </p>
-        </div>
+        </div> */}
       </div>
     </section>
   )

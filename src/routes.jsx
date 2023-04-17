@@ -4,8 +4,7 @@ import {
   BoltIcon,
   BellIcon
 } from "@heroicons/react/24/solid";
-import { Home, Profile, Patients, Notifications } from "@/pages/dashboard";
-import Result from "./pages/dashboard/result";
+import { Home, Profile, Patients, Result } from "@/pages/dashboard";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
